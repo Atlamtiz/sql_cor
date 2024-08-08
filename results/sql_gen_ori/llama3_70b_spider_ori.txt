@@ -1,0 +1,733 @@
+-------------------------0 sample_num
+```sql
+SELECT COUNT(h.head_ID)
+FROM head h
+JOIN management m ON h.head_ID = m.head_ID
+WHERE h.age > 56;
+```
+-------------------------1 sample_num
+```sql
+SELECT h.name, h.born_state, h.age
+FROM head h
+JOIN management m ON h.head_ID = m.head_ID
+JOIN department d ON m.department_ID = d.Department_ID
+ORDER BY h.age;
+```
+-------------------------2 sample_num
+```sql
+SELECT EXTRACT(YEAR FROM Creation) AS Creation_Year, Name, Budget_in_Billions
+FROM department;
+```
+-------------------------3 sample_num
+```sql
+SELECT MAX(Budget_in_Billions) AS Max_Budget, MIN(Budget_in_Billions) AS Min_Budget
+FROM department;
+```
+-------------------------4 sample_num
+```sql
+SELECT AVG(Num_Employees)
+FROM department
+WHERE Ranking BETWEEN 10 AND 15;
+```
+-------------------------5 sample_num
+```sql
+SELECT h.name
+FROM head h
+WHERE h.born_state <> 'California';
+```
+-------------------------6 sample_num
+```sql
+SELECT DISTINCT YEAR(d.Creation)
+FROM department d
+JOIN management m ON d.Department_ID = m.department_ID
+JOIN head h ON m.head_ID = h.head_ID
+WHERE h.born_state = 'Alabama';
+```
+-------------------------7 sample_num
+```sql
+SELECT born_state
+FROM head
+GROUP BY born_state
+HAVING COUNT(*) >= 3;
+```
+-------------------------8 sample_num
+```sql
+SELECT EXTRACT(YEAR FROM Creation) AS year, COUNT(*) AS num_departments
+FROM department
+GROUP BY year
+ORDER BY num_departments DESC
+LIMIT 1;
+```
+-------------------------9 sample_num
+```sql
+SELECT d.Name, d.Num_Employees
+FROM department d
+JOIN management m ON d.Department_ID = m.department_ID
+JOIN head h ON m.head_ID = h.head_ID
+WHERE m.temporary_acting = 'Yes';
+```
+-------------------------10 sample_num
+```sql
+SELECT COUNT(temporary_acting) 
+FROM management;
+```
+-------------------------11 sample_num
+```sql
+SELECT COUNT(*)
+FROM department d
+LEFT JOIN management m ON d.Department_ID = m.department_ID
+WHERE m.head_ID IS NULL;
+```
+-------------------------12 sample_num
+```sql
+SELECT DISTINCT h.age
+FROM head h
+JOIN management m ON h.head_ID = m.head_ID
+WHERE m.temporary_acting = 'acting';
+```
+-------------------------13 sample_num
+```sql
+SELECT born_state
+FROM head
+WHERE head_ID IN (
+  SELECT h.head_ID
+  FROM department d
+  JOIN management m ON d.Department_ID = m.department_ID
+  JOIN head h ON m.head_ID = h.head_ID
+  WHERE d.Name IN ('Treasury', 'Homeland Security')
+)
+GROUP BY born_state
+HAVING COUNT(DISTINCT d.Name) = 2;
+```
+-------------------------14 sample_num
+```sql
+SELECT d.Department_ID, d.Name, COUNT(h.head_ID) AS num_heads
+FROM department d
+JOIN management m ON d.Department_ID = m.department_ID
+JOIN head h ON m.head_ID = h.head_ID
+GROUP BY d.Department_ID, d.Name
+HAVING COUNT(h.head_ID) > 1;
+```
+-------------------------15 sample_num
+```sql
+SELECT head_ID, name 
+FROM head 
+WHERE name LIKE '%Ha%';
+```
+-------------------------16 sample_num
+```sql
+SELECT COUNT(*) 
+FROM farm;
+```
+-------------------------17 sample_num
+```sql
+SELECT COUNT(*) 
+FROM farm;
+```
+-------------------------18 sample_num
+```sql
+SELECT SUM(Total_Horses) 
+FROM farm 
+GROUP BY Year 
+ORDER BY SUM(Total_Horses) ASC;
+```
+-------------------------19 sample_num
+```sql
+SELECT Farm_ID, SUM(Total_Horses) AS Total_Horses_Record
+FROM farm
+GROUP BY Farm_ID
+ORDER BY Total_Horses_Record ASC;
+```
+-------------------------20 sample_num
+```sql
+SELECT Hosts
+FROM farm_competition
+WHERE Theme <> 'Aliens';
+```
+-------------------------21 sample_num
+```sql
+SELECT Hosts
+FROM farm_competition
+WHERE Theme != 'Aliens';
+```
+-------------------------22 sample_num
+```sql
+SELECT Year, Theme
+FROM farm_competition
+ORDER BY Year ASC;
+```
+-------------------------23 sample_num
+```sql
+SELECT Theme, Year
+FROM farm_competition
+ORDER BY Year ASC;
+```
+-------------------------24 sample_num
+```sql
+SELECT AVG(Working_Horses) 
+FROM farm 
+WHERE Total_Horses > 5000;
+```
+-------------------------25 sample_num
+```sql
+SELECT AVG(Working_Horses) 
+FROM farm 
+WHERE Total_Horses > 5000;
+```
+-------------------------26 sample_num
+```sql
+SELECT MAX(Cows), MIN(Cows)
+FROM farm;
+```
+-------------------------27 sample_num
+```sql
+SELECT MAX(Cows), MIN(Cows) 
+FROM farm;
+```
+-------------------------28 sample_num
+```sql
+SELECT COUNT(DISTINCT Status) 
+FROM city;
+```
+-------------------------29 sample_num
+```sql
+SELECT COUNT(DISTINCT Status) 
+FROM city;
+```
+-------------------------30 sample_num
+```sql
+SELECT Official_Name
+FROM city
+ORDER BY Population DESC;
+```
+-------------------------31 sample_num
+```sql
+SELECT Official_Name
+FROM city
+ORDER BY Population DESC;
+```
+-------------------------32 sample_num
+```sql
+SELECT Official_Name, Status
+FROM city
+ORDER BY Population DESC
+LIMIT 1;
+```
+-------------------------33 sample_num
+```sql
+SELECT Official_Name, Status
+FROM city
+WHERE Population = (SELECT MAX(Population) FROM city);
+```
+-------------------------34 sample_num
+```sql
+SELECT fc.Year, c.Official_Name
+FROM farm_competition fc
+JOIN city c ON fc.Host_city_ID = c.City_ID;
+```
+-------------------------35 sample_num
+```sql
+SELECT fc.Year, c.Official_Name
+FROM farm_competition fc
+JOIN city c ON fc.Host_city_ID = c.City_ID;
+```
+-------------------------36 sample_num
+```sql
+SELECT c.Official_Name
+FROM city c
+JOIN farm_competition fc ON c.City_ID = fc.Host_city_ID
+GROUP BY c.Official_Name
+HAVING COUNT(DISTINCT fc.Competition_ID) > 1;
+```
+-------------------------37 sample_num
+```sql
+SELECT c.Official_Name
+FROM city c
+JOIN farm_competition fc ON c.City_ID = fc.Host_city_ID
+GROUP BY c.Official_Name
+HAVING COUNT(DISTINCT fc.Competition_ID) > 1;
+```
+-------------------------38 sample_num
+```sql
+SELECT c.Status
+FROM city c
+JOIN (
+  SELECT Host_city_ID, COUNT(*) as count
+  FROM farm_competition
+  GROUP BY Host_city_ID
+  ORDER BY count DESC
+  LIMIT 1
+) AS sub ON c.City_ID = sub.Host_city_ID;
+```
+-------------------------39 sample_num
+```sql
+SELECT c.Status
+FROM city c
+JOIN (
+  SELECT Host_city_ID, COUNT(*) as num_competitions
+  FROM farm_competition
+  GROUP BY Host_city_ID
+  ORDER BY num_competitions DESC
+  LIMIT 1
+) AS fc ON c.City_ID = fc.Host_city_ID;
+```
+-------------------------40 sample_num
+```sql
+SELECT fc.Theme
+FROM farm_competition fc
+JOIN city c ON fc.Host_city_ID = c.City_ID
+WHERE c.Population > 1000;
+```
+-------------------------41 sample_num
+```sql
+SELECT fc.Theme
+FROM farm_competition fc
+JOIN city c ON fc.Host_city_ID = c.City_ID
+WHERE c.Population > 1000;
+```
+-------------------------42 sample_num
+```sql
+SELECT Status, AVG(Population) AS Average_Population
+FROM city
+GROUP BY Status;
+```
+-------------------------43 sample_num
+```sql
+SELECT Status, AVG(Population) AS Average_Population
+FROM city
+GROUP BY Status;
+```
+-------------------------44 sample_num
+```sql
+SELECT Status, COUNT(*) as Num_Cities
+FROM city
+GROUP BY Status
+ORDER BY Num_Cities DESC;
+```
+-------------------------45 sample_num
+```sql
+SELECT Status, COUNT(*) as frequency
+FROM city
+GROUP BY Status
+ORDER BY frequency ASC;
+```
+-------------------------46 sample_num
+```sql
+SELECT Status, COUNT(*) as count
+FROM city
+GROUP BY Status
+ORDER BY count DESC
+LIMIT 1;
+```
+-------------------------47 sample_num
+```sql
+SELECT Status, COUNT(*) as count
+FROM city
+GROUP BY Status
+ORDER BY count DESC
+LIMIT 1;
+```
+-------------------------48 sample_num
+```sql
+SELECT Official_Name
+FROM city
+WHERE City_ID NOT IN (SELECT Host_city_ID FROM farm_competition);
+```
+-------------------------49 sample_num
+```sql
+SELECT Official_Name
+FROM city
+WHERE City_ID NOT IN (
+  SELECT Host_city_ID
+  FROM farm_competition
+);
+```
+-------------------------50 sample_num
+```sql
+SELECT DISTINCT Status 
+FROM city 
+WHERE Population > 1500 AND Population < 5000;
+```
+-------------------------51 sample_num
+```sql
+SELECT DISTINCT Status
+FROM city
+WHERE Status IN (
+  SELECT Status
+  FROM city
+  WHERE Population > 1500
+) AND Status IN (
+  SELECT Status
+  FROM city
+  WHERE Population < 500
+);
+```
+-------------------------52 sample_num
+```sql
+SELECT Official_Name
+FROM city
+WHERE Population > 1500 OR Population < 500;
+```
+-------------------------53 sample_num
+```sql
+SELECT Official_Name 
+FROM city 
+WHERE Population > 1500 OR Population < 500;
+```
+-------------------------54 sample_num
+```sql
+SELECT Census_Ranking
+FROM city
+WHERE Status != 'Village';
+```
+-------------------------55 sample_num
+```sql
+SELECT Census_Ranking
+FROM city
+WHERE Status != 'Village';
+```
+-------------------------56 sample_num
+```sql
+SELECT c.course_id, c.course_name, COUNT(scr.student_id) as num_registered_students
+FROM Student_Course_Registrations scr
+JOIN Courses c ON scr.course_id = c.course_id
+GROUP BY scr.course_id, c.course_name
+ORDER BY num_registered_students DESC
+LIMIT 1;
+```
+-------------------------57 sample_num
+```sql
+SELECT c.course_name
+FROM Courses c
+JOIN Student_Course_Registrations r ON c.course_id = r.course_id
+GROUP BY c.course_name
+ORDER BY COUNT(r.student_id) DESC
+LIMIT 1;
+```
+-------------------------58 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+GROUP BY student_id
+HAVING COUNT(course_id) = (
+  SELECT MIN(cnt)
+  FROM (
+    SELECT student_id, COUNT(course_id) AS cnt
+    FROM Student_Course_Registrations
+    GROUP BY student_id
+  ) AS subquery
+)
+```
+-------------------------59 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+GROUP BY student_id
+HAVING COUNT(course_id) = (
+  SELECT MIN(cnt)
+  FROM (
+    SELECT student_id, COUNT(course_id) AS cnt
+    FROM Student_Course_Registrations
+    GROUP BY student_id
+  ) AS subquery
+);
+```
+-------------------------60 sample_num
+```sql
+SELECT p.first_name, p.last_name
+FROM Candidates c
+JOIN People p ON c.candidate_id = p.person_id;
+```
+-------------------------61 sample_num
+```sql
+SELECT p.first_name, p.last_name
+FROM People p
+JOIN Candidates c ON p.person_id = c.candidate_id;
+```
+-------------------------62 sample_num
+```sql
+SELECT s.student_id
+FROM Students s
+LEFT JOIN Student_Course_Attendance sca ON s.student_id = sca.student_id
+WHERE sca.student_id IS NULL;
+```
+-------------------------63 sample_num
+```sql
+SELECT s.student_id
+FROM Students s
+LEFT JOIN Student_Course_Attendance sca ON s.student_id = sca.student_id
+WHERE sca.student_id IS NULL;
+```
+-------------------------64 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Attendance;
+```
+-------------------------65 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Attendance
+GROUP BY student_id
+HAVING COUNT(*) > 0;
+```
+-------------------------66 sample_num
+```sql
+SELECT s.student_id, c.course_name
+FROM Students s
+JOIN Student_Course_Registrations scr ON s.student_id = scr.student_id
+JOIN Courses c ON scr.course_id = c.course_id;
+```
+-------------------------67 sample_num
+```sql
+SELECT s.student_id, p.first_name, p.last_name, c.course_name, scr.registration_date
+FROM Students s
+JOIN People p ON s.student_id = p.person_id
+JOIN Student_Course_Registrations scr ON s.student_id = scr.student_id
+JOIN Courses c ON scr.course_id = c.course_id
+ORDER BY scr.registration_date DESC
+LIMIT 1;
+```
+-------------------------68 sample_num
+```sql
+SELECT s.student_id, p.first_name, p.last_name, c.course_name, scr.registration_date
+FROM Students s
+JOIN People p ON s.student_id = p.person_id
+JOIN Student_Course_Registrations scr ON s.student_id = scr.student_id
+JOIN Courses c ON scr.course_id = c.course_id
+ORDER BY scr.registration_date DESC
+LIMIT 1;
+```
+-------------------------69 sample_num
+```sql
+SELECT COUNT(DISTINCT s.student_id)
+FROM Students s
+JOIN Student_Course_Registrations scr ON s.student_id = scr.student_id
+JOIN Courses c ON scr.course_id = c.course_id
+WHERE c.course_name = 'English';
+```
+-------------------------70 sample_num
+```sql
+SELECT COUNT(DISTINCT s.student_id)
+FROM Students s
+JOIN Student_Course_Registrations scr ON s.student_id = scr.student_id
+JOIN Courses c ON scr.course_id = c.course_id
+WHERE c.course_name LIKE '%English%';
+```
+-------------------------71 sample_num
+```sql
+SELECT COUNT(DISTINCT course_id)
+FROM Student_Course_Registrations
+WHERE student_id = 171;
+```
+-------------------------72 sample_num
+```sql
+SELECT COUNT(DISTINCT course_id)
+FROM Student_Course_Attendance
+WHERE student_id = 171;
+```
+-------------------------73 sample_num
+```sql
+SELECT c.candidate_id
+FROM Candidates c
+JOIN People p ON c.candidate_id = p.person_id
+WHERE p.email_address = 'stanley.monahan@example.org';
+```
+-------------------------74 sample_num
+```sql
+SELECT c.candidate_id
+FROM Candidates c
+JOIN People p ON c.candidate_id = p.person_id
+WHERE p.email_address = 'stanley.monahan@example.org';
+```
+-------------------------75 sample_num
+```sql
+SELECT ca.candidate_id
+FROM Candidate_Assessments ca
+JOIN Candidates c ON ca.candidate_id = c.candidate_id
+JOIN Student_Course_Registrations scr ON c.candidate_id = scr.student_id
+JOIN Courses co ON scr.course_id = co.course_id
+ORDER BY scr.registration_date DESC
+LIMIT 1;
+```
+-------------------------76 sample_num
+```sql
+SELECT ca.candidate_id
+FROM Candidate_Assessments ca
+JOIN Candidates c ON ca.candidate_id = c.candidate_id
+JOIN Student_Course_Registrations scr ON c.candidate_id = scr.student_id
+JOIN Courses co ON scr.course_id = co.course_id
+ORDER BY ca.assessment_date DESC
+LIMIT 1;
+```
+-------------------------77 sample_num
+```sql
+SELECT s.student_id, p.first_name, p.last_name, COUNT(sc.course_id) as total_courses
+FROM Students s
+JOIN People p ON s.student_id = p.person_id
+JOIN Student_Course_Registrations sc ON s.student_id = sc.student_id
+GROUP BY s.student_id, p.first_name, p.last_name
+ORDER BY total_courses DESC
+LIMIT 1;
+```
+-------------------------78 sample_num
+```sql
+SELECT s.student_id, p.first_name, p.middle_name, p.last_name, COUNT(cr.course_id) AS num_courses
+FROM Students s
+JOIN People p ON s.student_id = p.person_id
+JOIN Student_Course_Registrations cr ON s.student_id = cr.student_id
+GROUP BY s.student_id, p.first_name, p.middle_name, p.last_name
+ORDER BY num_courses DESC
+LIMIT 1;
+```
+-------------------------79 sample_num
+```sql
+SELECT s.student_id, COUNT(cr.course_id) AS num_registered_courses
+FROM Students s
+JOIN Student_Course_Registrations cr ON s.student_id = cr.student_id
+GROUP BY s.student_id;
+```
+-------------------------80 sample_num
+```sql
+SELECT s.student_id, COUNT(cr.course_id) AS num_courses_registered
+FROM Students s
+JOIN Student_Course_Registrations cr ON s.student_id = cr.student_id
+GROUP BY s.student_id;
+```
+-------------------------81 sample_num
+```sql
+SELECT c.course_name, COUNT(scr.student_id) AS num_registered_students
+FROM Courses c
+JOIN Student_Course_Registrations scr ON c.course_id = scr.course_id
+GROUP BY c.course_name;
+```
+-------------------------82 sample_num
+```sql
+SELECT c.course_id, c.course_name, COUNT(scr.student_id) AS num_students_registered
+FROM Courses c
+JOIN Student_Course_Registrations scr ON c.course_id = scr.course_id
+GROUP BY c.course_id, c.course_name;
+```
+-------------------------83 sample_num
+```sql
+SELECT candidate_id
+FROM Candidate_Assessments
+WHERE assessment_outcome_code = 'Pass';
+```
+-------------------------84 sample_num
+```sql
+SELECT candidate_id 
+FROM Candidate_Assessments 
+WHERE asessment_outcome_code = 'Pass';
+```
+-------------------------85 sample_num
+```sql
+SELECT p.cell_mobile_number
+FROM People p
+JOIN Candidates c ON p.person_id = c.candidate_id
+JOIN Candidate_Assessments ca ON c.candidate_id = ca.candidate_id
+WHERE ca.assessment_outcome_code = 'Fail';
+```
+-------------------------86 sample_num
+```sql
+SELECT p.cell_mobile_number
+FROM People p
+JOIN Candidates c ON p.person_id = c.person_id
+JOIN Candidate_Assessments ca ON c.candidate_id = ca.candidate_id
+WHERE ca.assessment_outcome_code = 'Fail';
+```
+-------------------------87 sample_num
+```sql
+SELECT student_id 
+FROM Student_Course_Registrations 
+WHERE course_id = 301;
+```
+-------------------------88 sample_num
+```sql
+SELECT student_id 
+FROM Student_Course_Registrations 
+WHERE course_id = 301;
+```
+-------------------------89 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+WHERE course_id = 301
+ORDER BY registration_date DESC
+LIMIT 1;
+```
+-------------------------90 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+WHERE course_id = 301
+ORDER BY registration_date DESC
+LIMIT 1;
+```
+-------------------------91 sample_num
+```sql
+SELECT DISTINCT city
+FROM Addresses
+JOIN People_Addresses ON Addresses.address_id = People_Addresses.address_id
+JOIN People ON People_Addresses.person_id = People.person_id;
+```
+-------------------------92 sample_num
+```sql
+SELECT DISTINCT city 
+FROM Addresses;
+```
+-------------------------93 sample_num
+```sql
+SELECT DISTINCT a.city
+FROM Addresses a
+JOIN People_Addresses pa ON a.address_id = pa.address_id
+JOIN People p ON pa.person_id = p.person_id
+JOIN Students s ON p.person_id = s.student_id;
+```
+-------------------------94 sample_num
+```sql
+SELECT DISTINCT a.city
+FROM Addresses a
+JOIN People_Addresses pa ON a.address_id = pa.address_id
+JOIN People p ON pa.person_id = p.person_id
+JOIN Students s ON p.person_id = s.student_id;
+```
+-------------------------95 sample_num
+```sql
+SELECT course_name
+FROM Courses
+ORDER BY course_name ASC;
+```
+-------------------------96 sample_num
+```sql
+SELECT course_name
+FROM Courses
+ORDER BY course_name ASC;
+```
+-------------------------97 sample_num
+```sql
+SELECT first_name
+FROM People
+ORDER BY first_name ASC;
+```
+-------------------------98 sample_num
+```sql
+SELECT first_name
+FROM People
+ORDER BY first_name ASC;
+```
+-------------------------99 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+UNION
+SELECT student_id
+FROM Student_Course_Attendance;
+```
+-------------------------100 sample_num
+```sql
+SELECT student_id
+FROM Student_Course_Registrations
+UNION
+SELECT student_id
+FROM Student_Course_Attendance;
+```
